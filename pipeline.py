@@ -44,9 +44,9 @@ class MachineLearningPipeline(object):
 
         self.memory_usage = dataRover.memory_usage
         
-        print 'train data : ' + str(self.train.shape[0]) + ' rows, ' + str(self.train.shape[1]) + ' columns'                
-        print 'test data : ' + str(self.test.shape[0]) + ' rows, ' + str(self.test.shape[1]) + ' columns'
-        print 'total memory usage : ' + str(self.memory_usage/1024.0) + ' (KB)'
+#        print 'train data : ' + str(self.train.shape[0]) + ' rows, ' + str(self.train.shape[1]) + ' columns'                
+#        print 'test data : ' + str(self.test.shape[0]) + ' rows, ' + str(self.test.shape[1]) + ' columns'
+#        print 'total memory usage : ' + str(self.memory_usage/1024.0) + ' (KB)'
     
     def exploringData(self, setID):
 #        self.dataRover = DataRover(self.directory, self.train, self.test)
@@ -80,29 +80,33 @@ class MachineLearningPipeline(object):
             if target in self.categoricals:
                 noOfClasses = len( y.unique() )
                 if noOfClasses > 2:
-                    self.predictors[y.name] = predictors.MulticlassClassifier(y)
+                    self.predictors[y.name] = predictors.MulticlassClassifier(y, self.featureMixer, self.id_col)
                 else:
                     self.predictors[y.name] = predictors.BinaryClassifier(y, self.featureMixer, self.id_col)
                     
             else:
-                self.predictors[y.name] = predictors.Regressor(y, self.featureMixer, self.id_col, self.targets)
+                self.predictors[y.name] = predictors.Regressor(y, self.featureMixer, self.id_col, self.targets, 'rmsle')
     
     def modelTargets(self):
         for target in self.predictors:
+            
             model = self.predictors[target]
+            print 
+            print 'evaluating ' + target
             model.model()
             
 
 if __name__ == '__main__':
-    rover = datarover.DataRover('/home/abzooba/python-workspace/titanic', 'train.csv', 'test.csv')
+    rover = datarover.DataRover('/home/abzooba/python-workspace/otto', 'train.csv', 'test.csv')
     mixer = preprocessing.FeatureMixer(rover)
     
     ml = MachineLearningPipeline(rover, mixer) # ~ KB
-    ml.exploringData()
+    ml.exploringData(True)
     
     ml.cleaningData()
     ml.mappingTargets()
     ml.modelTargets()
+#    ml = DataRover('/home/abzooba/python-workspace/titanic', 'train.csv', 'test.csv') ~ KB
 #    ml = DataRover('/home/abzooba/python-workspace/bike-sharing', 'train.csv', 'test.csv') ~ KB
 #    ml = DataRover('/home/abzooba/python-workspace/otto', 'train.csv', 'test.csv') # ~ 13 MB
     

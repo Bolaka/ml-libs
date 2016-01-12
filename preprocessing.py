@@ -36,7 +36,7 @@ class FeatureMixer(object):
         for cate in self.categoricals:
             column = self.train[cate]
             dtype = str(column.dtype)
-            if dtype == 'object':
+            if dtype == 'object' and cate not in self.targets:
                 le = LabelEncoder()
                 le.fit(np.append(self.train[cate], self.test[cate]))
             
@@ -45,4 +45,7 @@ class FeatureMixer(object):
         
         self.features = self.categoricals + self.numericals
         
+        for t in self.targets:
+            self.features.remove(t)
+            
         return True
