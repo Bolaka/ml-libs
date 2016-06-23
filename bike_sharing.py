@@ -26,5 +26,5 @@ ml = pipeline.MachineLearningPipeline(rover, mixer) # ~ KB
 ml.exploringData(True)
 
 ml.cleaningData()
-ml.mappingTargets()
+ml.mappingTargets('rmsle')
 ml.modelTargets()

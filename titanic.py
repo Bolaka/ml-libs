@@ -100,5 +100,5 @@ ml = pipeline.MachineLearningPipeline(rover, mixer) # ~ KB
 ml.exploringData(False)
 
 ml.cleaningData()
-ml.mappingTargets()
+ml.mappingTargets('error')
 ml.modelTargets()

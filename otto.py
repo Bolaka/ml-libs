@@ -24,7 +24,7 @@ ml = pipeline.MachineLearningPipeline(rover, mixer) # ~ KB
 ml.exploringData(True)
 
 ml.cleaningData()
-ml.mappingTargets()
+ml.mappingTargets('mlogloss')
 ml.modelTargets()
 
 submission = pd.read_csv('/home/abzooba/python-workspace/otto/submission.csv')
